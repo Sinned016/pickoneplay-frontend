@@ -1,0 +1,152 @@
+@import "tailwindcss";
+
+/*
+  Canonical scale — keep primitives (components/ui/*) aligned to this instead
+  of re-deciding radius/shadow per usage:
+    rounded-lg   -> controls (buttons, inputs, textareas)
+    rounded-xl   -> image-led tiles (thumbnails, upload dropzones)
+    rounded-2xl  -> content panels/cards
+    rounded-full -> pills/badges/circular icon buttons
+    shadow-md    -> default panel elevation
+    shadow-lg    -> popovers/dropdowns
+    shadow-glow-main1/main2 -> interactive hover/selected state tied to a side
+    shadow-glow-duel        -> reserved for "both sides at once" moments (VsDivider)
+*/
+
+@theme {
+    /* Background */
+  --color-background: #0b0b0b;
+
+  /* Primary accent (cyan) — "left / A" choice */
+  --color-main1: #67E8F9;        /* base cyan */
+  --color-main1-hover: #A5F3FC;  /* lighter + glow feel */
+
+  /* Secondary accent (coral) — "right / B" choice */
+  --color-main2: #FB7185;        /* base coral */
+  --color-main2-hover: #FDA4AF;  /* lighter + glow feel */
+
+  /* Text */
+  --color-text1: #d1d5db;
+  --color-text1-hover: #f9fafb;
+
+  /* Muted Text */
+  --color-muted: #aeb6c2;
+
+  /* Semantic */
+  --color-error: #f87171;
+  --color-error-hover: #fca5a5;
+  --color-success: #22c55e;
+  --color-success-hover: #4ade80;
+
+  /* Surface layers (modern glassy dark UI) */
+  --color-surface1: rgba(255, 255, 255, 0.03);
+  --color-surface1-hover: rgba(255, 255, 255, 0.06);
+
+  --color-surface2: rgba(255, 255, 255, 0.05);
+  --color-surface2-hover: rgba(255, 255, 255, 0.08);
+
+  /* Border */
+  --color-border1: rgba(255, 255, 255, 0.06);
+  --color-border1-hover: rgba(255, 255, 255, 0.12);
+  --color-border1-strong: rgba(255, 255, 255, 0.18);
+  --color-border1-focus: rgba(255, 255, 255, 0.9);
+
+  /* Glow shadows — soft, colored elevation instead of plain black */
+  --shadow-glow-main1: 0 0 0 1px rgba(103, 232, 249, 0.35), 0 8px 30px -6px rgba(103, 232, 249, 0.35);
+  --shadow-glow-main1-lg: 0 0 0 1px rgba(103, 232, 249, 0.45), 0 14px 44px -8px rgba(103, 232, 249, 0.45);
+  --shadow-glow-main2: 0 0 0 1px rgba(251, 113, 133, 0.35), 0 8px 30px -6px rgba(251, 113, 133, 0.35);
+  --shadow-glow-main2-lg: 0 0 0 1px rgba(251, 113, 133, 0.45), 0 14px 44px -8px rgba(251, 113, 133, 0.45);
+  --shadow-glow-duel: 0 0 22px -6px rgba(103, 232, 249, 0.4), 0 0 22px -6px rgba(251, 113, 133, 0.4);
+  --shadow-glow-error: 0 0 0 1px rgba(248, 113, 113, 0.35), 0 8px 26px -6px rgba(248, 113, 113, 0.35);
+  --shadow-glow-success: 0 0 0 1px rgba(34, 197, 94, 0.35), 0 8px 26px -6px rgba(34, 197, 94, 0.35);
+}
+
+.background2 {
+  background:
+    radial-gradient(circle at 12% -10%, rgba(103, 232, 249, 0.05), transparent 35%),
+    radial-gradient(circle at 88% -10%, rgba(251, 113, 133, 0.05), transparent 35%),
+    linear-gradient(
+      180deg,
+      #161616 0%,
+      #0d0d0d 100%
+    );
+  background-attachment: fixed;
+}
+
+
+.hero-bg {
+  background:
+    radial-gradient(
+      circle at left,
+      rgba(103, 232, 249, 0.12),
+      transparent 45%
+    ),
+    radial-gradient(
+      circle at right,
+      rgba(251, 113, 133, 0.12),
+      transparent 45%
+    ),
+    linear-gradient(
+      180deg,
+      #161616 0%,
+      #0d0d0d 100%
+    );
+}
+
+@layer utilities {
+  .animate-in {
+    animation-fill-mode: both;
+  }
+
+  .slide-in-from-top {
+    animation-name: slideInFromTop;
+  }
+
+  .animate-duration-300 {
+    animation-duration: 300ms;
+  }
+
+  .pair-enter {
+    animation: pairEnter 300ms ease-out both;
+  }
+
+  .pair-exit {
+    animation: pairExit 220ms ease-in both;
+  }
+}
+
+@keyframes slideInFromTop {
+  from {
+    opacity: 0;
+    transform: translateY(-0.5rem)
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0)
+  }
+}
+
+@keyframes pairEnter {
+  from {
+    opacity: 0;
+    transform: translateY(0.75rem);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes pairExit {
+  from {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  to {
+    opacity: 0;
+    transform: translateY(-0.75rem);
+  }
+}
