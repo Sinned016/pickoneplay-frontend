@@ -1,6 +1,8 @@
 export async function createGame(data: FormData) {
   console.log("STEP 1");
 
+  console.log("document cookies:", document.cookie);
+
   const res = await fetch(
     `${process.env.NEXT_PUBLIC_BACKEND_URL}/game/create`,
     {
