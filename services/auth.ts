@@ -4,13 +4,16 @@ import { RegisterFormData } from "@/types/RegisterFormData";
 export async function RegisterAccount(data: RegisterFormData) {
   console.log("STEP 1");
 
-  const res = await fetch("/api/auth/register", {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
+  const res = await fetch(
+    `${process.env.NEXT_PUBLIC_BACKEND_URL}/auth/register`,
+    {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(data),
     },
-    body: JSON.stringify(data),
-  });
+  );
 
   const responseData = await res.json();
 
@@ -24,11 +27,12 @@ export async function RegisterAccount(data: RegisterFormData) {
 export async function LoginAccount(data: LoginFormData) {
   console.log("STEP 1");
 
-  const res = await fetch("/api/auth/login", {
+  const res = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/auth/login`, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
     },
+    credentials: "include",
     body: JSON.stringify(data),
   });
 
@@ -39,14 +43,4 @@ export async function LoginAccount(data: LoginFormData) {
   }
 
   return responseData;
-}
-
-export async function LogoutAccount(data: LoginFormData) {
-  const res = await fetch("/api/auth/logout", {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-    },
-    credentials: "include",
-  });
 }

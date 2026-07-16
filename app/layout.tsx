@@ -28,11 +28,10 @@ export default async function RootLayout({
   const res = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/auth/me`, {
     method: "GET",
     headers: {
-      "Content-Type": "application/json",
-
       // IMPORTANT: forward cookies to backend
       cookie: cookieStore.toString(),
     },
+    cache: "no-store",
   });
 
   const data = await res.json();
