@@ -116,7 +116,7 @@ export default function Create() {
       const result = await createGame(formData);
       console.log("SUCCESS:", result);
 
-      router.push("/settings/games");
+      router.push("/profile/games");
     } catch (error: any) {
       console.error(error);
       setStepError(error.message || "Something went wrong. Try again.");
