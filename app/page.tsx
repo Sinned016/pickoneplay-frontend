@@ -9,6 +9,7 @@ export default async function Home() {
   let topGames: Game[] = [];
   let newGames: Game[] = [];
   let categories: string[] = [];
+  let allGames: Game[] = [];
 
   try {
     const res = await fetch(
@@ -33,23 +34,48 @@ export default async function Home() {
     console.error(err);
   }
 
+  // All games, only used for the hero stats and per-category counts.
+  try {
+    const res = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/game/games`);
+    const json = await res.json();
+
+    if (json.status !== "success") {
+      throw new Error(json.message);
+    }
+
+    allGames = json.data;
+  } catch (err) {
+    console.error(err);
+  }
+
+  const stats = {
+    games: allGames.length,
+    plays: allGames.reduce((sum, game) => sum + game.plays, 0),
+    categories: categories.length,
+  };
+
+  const categoryCounts: Record<string, number> = {};
+  allGames.forEach((game) => {
+    categoryCounts[game.category] = (categoryCounts[game.category] ?? 0) + 1;
+  });
+
   return (
     <div>
       <div className="mx-auto">
-        <Hero />
+        <Hero games={topGames} stats={stats} />
 
-        <div className="flex flex-col lg:flex-row gap-6 mt-8 mb-16 sm:mb-24 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto">
-          <div className="lg:flex-2">
+        <div className="flex flex-col lg:flex-row gap-10 lg:gap-8 mt-8 mb-16 sm:mb-24 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto">
+          <div className="lg:flex-2 min-w-0">
             <FeaturedGames games={newGames} />
           </div>
 
-          <div className="lg:flex-1">
+          <div className="lg:flex-1 min-w-0">
             {/* Gotta make some type of system so i can calculate top games when i fetch in backend, then pass those down here. */}
             <TopGames games={topGames} />
           </div>
         </div>
 
-        <CategoryBrowse categories={categories} />
+        <CategoryBrowse categories={categories} counts={categoryCounts} />
 
         <CreateGameBanner />
       </div>

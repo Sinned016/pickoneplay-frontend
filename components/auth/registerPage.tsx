@@ -1,11 +1,12 @@
 "use client";
+import AuthShell, { AuthField, ShakeError } from "@/components/auth/authShell";
 import Button from "@/components/ui/Button";
-import Card from "@/components/ui/Card";
 import FormError from "@/components/ui/FormError";
 import Input from "@/components/ui/Input";
+import PasswordInput from "@/components/ui/PasswordInput";
 import { RegisterAccount } from "@/services/auth";
 import { RegisterFormData } from "@/types/RegisterFormData";
-import { Lock, Mail, UserCircle } from "lucide-react";
+import { ArrowRight, Loader2, Mail, UserCircle, UserPlus } from "lucide-react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { SubmitHandler, useForm } from "react-hook-form";
@@ -52,111 +53,115 @@ export default function RegisterPage() {
   };
 
   return (
-    <div className="min-h-[70vh] flex items-center justify-center px-4 py-12">
-      <Card
-        variant="surface1"
-        bordered
-        radius="2xl"
-        padding="none"
-        className="max-w-md w-full mx-auto shadow-glow-main2"
+    <AuthShell
+      title="Create account"
+      subtitle="Join in, make your own games and pick a side."
+      icon={UserPlus}
+      accent="main2"
+    >
+      <form
+        className="flex flex-col gap-4"
+        onSubmit={handleSubmit(onSubmit)}
+        autoComplete="off"
       >
-        <div className="flex flex-col gap-6 p-6">
-          <div className="mx-auto w-fit rounded-full p-3 bg-gradient-to-br from-main1/20 to-main2/20 border border-border1">
-            <UserCircle className="w-5 h-5 text-main2" />
-          </div>
+        <AuthField index={0}>
+          <Input
+            icon={Mail}
+            type="email"
+            placeholder="Email"
+            error={!!errors.email}
+            {...register("email", {
+              required: "Please enter your email",
+              validate: (value) => {
+                if (!value.includes("@")) {
+                  return "Email must contain @";
+                }
+              },
+            })}
+          />
+          <FormError>{errors.email?.message}</FormError>
+        </AuthField>
 
-          <h2 className="text-3xl text-text1 text-center">Register</h2>
+        <AuthField index={1}>
+          <Input
+            icon={UserCircle}
+            type="text"
+            placeholder="Username"
+            error={!!errors.username}
+            {...register("username", {
+              required: "Please enter your username",
+              minLength: {
+                value: 6,
+                message: "Minimum 6 characters",
+              },
+              maxLength: {
+                value: 12,
+                message: "Maximum 12 characters",
+              },
+            })}
+          />
+          <FormError>{errors.username?.message}</FormError>
+        </AuthField>
 
-          <form
-            className="flex flex-col gap-2"
-            onSubmit={handleSubmit(onSubmit)}
-            autoComplete="off"
+        <AuthField index={2}>
+          <PasswordInput
+            placeholder="Password"
+            error={!!errors.password}
+            {...register("password", {
+              required: "Please enter a password",
+              minLength: {
+                value: 8,
+                message: "Password has to be minimum 8 characters",
+              },
+            })}
+          />
+          <FormError>{errors.password?.message}</FormError>
+        </AuthField>
+
+        <AuthField index={3}>
+          <PasswordInput
+            placeholder="Password Confirmation"
+            error={!!errors.confirmPassword}
+            {...register("confirmPassword", {
+              required: "Please confirm your password",
+            })}
+          />
+          <FormError>{errors.confirmPassword?.message}</FormError>
+        </AuthField>
+
+        <AuthField index={4}>
+          <Button
+            type="submit"
+            variant="accent"
+            size="lg"
+            disabled={isSubmitting}
+            className="w-full mt-2"
           >
-            <Input
-              icon={Mail}
-              type="email"
-              placeholder="Email"
-              error={!!errors.email}
-              {...register("email", {
-                required: "Please enter your email",
-                validate: (value) => {
-                  if (!value.includes("@")) {
-                    return "Email must contain @";
-                  }
-                },
-              })}
-            />
-            <FormError>{errors.email?.message}</FormError>
+            {isSubmitting ? (
+              <Loader2 size={20} className="animate-spin" />
+            ) : (
+              <>
+                Register
+                <ArrowRight size={18} />
+              </>
+            )}
+          </Button>
+        </AuthField>
 
-            <Input
-              icon={UserCircle}
-              type="text"
-              placeholder="Username"
-              error={!!errors.username}
-              {...register("username", {
-                required: "Please enter your username",
-                minLength: {
-                  value: 6,
-                  message: "Minimum 6 characters",
-                },
-                maxLength: {
-                  value: 12,
-                  message: "Maximum 12 characters",
-                },
-              })}
-            />
-            <FormError>{errors.username?.message}</FormError>
+        <ShakeError message={errors.root?.message}>
+          <FormError className="justify-center">{errors.root?.message}</FormError>
+        </ShakeError>
 
-            <Input
-              icon={Lock}
-              type="password"
-              placeholder="Password"
-              error={!!errors.password}
-              {...register("password", {
-                required: "Please enter a password",
-                minLength: {
-                  value: 8,
-                  message: "Password has to be minimum 8 characters",
-                },
-              })}
-            />
-            <FormError>{errors.password?.message}</FormError>
-
-            <Input
-              icon={Lock}
-              type="password"
-              placeholder="Password Confirmation"
-              error={!!errors.confirmPassword}
-              {...register("confirmPassword", {
-                required: "Please confirm your password",
-              })}
-            />
-            <FormError>{errors.confirmPassword?.message}</FormError>
-
-            <Button
-              type="submit"
-              variant="primary"
-              size="lg"
-              disabled={isSubmitting}
-              className="w-full mt-6"
-            >
-              {isSubmitting ? "Loading..." : "Register"}
-            </Button>
-
-            <FormError className="justify-center">{errors.root?.message}</FormError>
-
-            <div className="flex justify-center items-center gap-2 mt-4">
-              <p className="text-sm">Already have an account?</p>
-              <Link
-                className="text-sm text-main1 hover:text-main1-hover"
-                href={"/login"}
-              >
-                Login
-              </Link>
-            </div>
-          </form>
+        <div className="flex justify-center items-center gap-2 mt-2">
+          <p className="text-sm text-muted">Already have an account?</p>
+          <Link
+            className="text-sm font-semibold text-main2 hover:text-main2-hover"
+            href={"/login"}
+          >
+            Login
+          </Link>
         </div>
-      </Card>
-    </div>
+      </form>
+    </AuthShell>
   );
 }

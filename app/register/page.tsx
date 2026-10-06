@@ -1,4 +1,3 @@
-import LoginPage from "@/components/auth/loginPage";
 import RegisterPage from "@/components/auth/registerPage";
 import { cookies } from "next/headers";
 import { redirect } from "next/navigation";

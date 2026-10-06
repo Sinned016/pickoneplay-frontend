@@ -1,4 +1,6 @@
 import MyGamesList from "@/components/profile/myGamesList";
+import Button from "@/components/ui/Button";
+import { Plus } from "lucide-react";
 import { Game } from "@/types/Game";
 import { cookies } from "next/headers";
 
@@ -30,9 +32,24 @@ export default async function MyGames() {
 
   return (
     <div>
-      <h1 className="text-2xl md:text-3xl font-black text-text1 mb-6">
-        My Games
-      </h1>
+      <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-4 mb-8">
+        <div>
+          <h2 className="text-3xl md:text-4xl font-black text-white">
+            My{" "}
+            <span className="bg-gradient-to-r from-main1 to-main2 bg-clip-text text-transparent">
+              games
+            </span>
+          </h2>
+          <p className="mt-1 text-muted">
+            Edit, share or clean up the games you&apos;ve created.
+          </p>
+        </div>
+
+        <Button href="/create" variant="primary" className="self-start sm:self-auto">
+          <Plus size={18} />
+          New game
+        </Button>
+      </div>
 
       <MyGamesList games={games} />
     </div>

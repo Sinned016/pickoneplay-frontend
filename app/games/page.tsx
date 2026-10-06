@@ -1,12 +1,13 @@
 import GamesBrowser from "@/components/gamesBrowser";
+import { isSortOption } from "@/lib/gameSort";
 import { Game } from "@/types/Game";
 
 type Props = {
-  searchParams: Promise<{ category?: string }>;
+  searchParams: Promise<{ category?: string; q?: string; sort?: string }>;
 };
 
 export default async function Games({ searchParams }: Props) {
-  const { category } = await searchParams;
+  const { category, q, sort } = await searchParams;
 
   let games: Game[] = [];
 
@@ -30,12 +31,30 @@ export default async function Games({ searchParams }: Props) {
   }
 
   return (
-    <div className="max-w-7xl mx-auto mt-8 mb-16 px-4 sm:px-6 lg:px-8">
-      <h1 className="text-2xl md:text-3xl font-black text-text1 mb-6">
-        All games
-      </h1>
+    <div className="relative isolate">
+      <div className="absolute -top-24 left-[10%] w-80 h-80 rounded-full bg-main1/10 blur-3xl -z-10 animate-drift" aria-hidden />
+      <div className="absolute -top-24 right-[10%] w-80 h-80 rounded-full bg-main2/10 blur-3xl -z-10 animate-drift [animation-delay:-7s]" aria-hidden />
 
-      <GamesBrowser games={games} initialCategory={category} />
+      <div className="max-w-7xl mx-auto mt-10 mb-16 px-4 sm:px-6 lg:px-8">
+        <div className="mb-8">
+          <h1 className="text-4xl md:text-5xl font-black tracking-tight text-white">
+            Find your next{" "}
+            <span className="bg-gradient-to-r from-main1 to-main2 bg-clip-text text-transparent">
+              dilemma
+            </span>
+          </h1>
+          <p className="mt-2 text-muted">
+            {games.length.toLocaleString()} would-you-rather games — search, filter and pick one.
+          </p>
+        </div>
+
+        <GamesBrowser
+          games={games}
+          initialCategory={category}
+          initialQuery={q}
+          initialSort={isSortOption(sort) ? sort : undefined}
+        />
+      </div>
     </div>
   );
 }

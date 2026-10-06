@@ -32,8 +32,14 @@ export default function ImageUploadTile({
       )}
     >
       {preview ? (
-        // eslint-disable-next-line @next/next/no-img-element
-        <img src={preview} alt={alt} className="w-full h-full object-cover" />
+        <div className="group relative w-full h-full">
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img src={preview} alt={alt} className="w-full h-full object-cover" />
+          <div className="absolute inset-0 flex flex-col items-center justify-center gap-1 bg-black/60 text-white opacity-0 transition-opacity duration-200 group-hover:opacity-100">
+            <ImagePlus size={24} />
+            <span className="text-xs font-semibold">Change image</span>
+          </div>
+        </div>
       ) : (
         <div className="flex flex-col items-center gap-2 text-muted">
           <ImagePlus size={28} />

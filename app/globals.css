@@ -106,12 +106,59 @@
     animation-duration: 300ms;
   }
 
-  .pair-enter {
-    animation: pairEnter 300ms ease-out both;
+  .animate-gradient-pan {
+    background-size: 200% 200%;
+    animation: gradientPan 8s ease-in-out infinite;
   }
 
-  .pair-exit {
-    animation: pairExit 220ms ease-in both;
+  .animate-float {
+    animation: float 6s ease-in-out infinite;
+  }
+
+  .animate-drift {
+    animation: drift 14s ease-in-out infinite;
+  }
+
+  /* Cyan -> coral gradient border without affecting the element's background.
+     Put it on a positioned element; the ring is drawn by ::before with a mask. */
+  .glow-border {
+    position: relative;
+    isolation: isolate;
+  }
+
+  .glow-border::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    padding: 1.5px;
+    border-radius: inherit;
+    background: linear-gradient(120deg, var(--color-main1), rgba(255, 255, 255, 0.4), var(--color-main2), var(--color-main1));
+    background-size: 300% 300%;
+    animation: gradientPan 6s ease-in-out infinite;
+    -webkit-mask:
+      linear-gradient(#000 0 0) content-box,
+      linear-gradient(#000 0 0);
+    -webkit-mask-composite: xor;
+    mask-composite: exclude;
+    pointer-events: none;
+    z-index: 1;
+  }
+
+  .no-scrollbar {
+    scrollbar-width: none;
+  }
+
+  .no-scrollbar::-webkit-scrollbar {
+    display: none;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .animate-gradient-pan,
+  .animate-float,
+  .animate-drift,
+  .glow-border::before {
+    animation: none;
   }
 }
 
@@ -127,26 +174,36 @@
   }
 }
 
-@keyframes pairEnter {
-  from {
-    opacity: 0;
-    transform: translateY(0.75rem);
+@keyframes gradientPan {
+  0%, 100% {
+    background-position: 0% 50%;
   }
 
-  to {
-    opacity: 1;
-    transform: translateY(0);
+  50% {
+    background-position: 100% 50%;
   }
 }
 
-@keyframes pairExit {
-  from {
-    opacity: 1;
+@keyframes float {
+  0%, 100% {
     transform: translateY(0);
   }
 
-  to {
-    opacity: 0;
-    transform: translateY(-0.75rem);
+  50% {
+    transform: translateY(-10px);
+  }
+}
+
+@keyframes drift {
+  0%, 100% {
+    transform: translate(0, 0) scale(1);
+  }
+
+  33% {
+    transform: translate(30px, -20px) scale(1.08);
+  }
+
+  66% {
+    transform: translate(-20px, 15px) scale(0.95);
   }
 }

@@ -15,17 +15,25 @@ export default async function CreateLayout({
   }
 
   return (
-    <div className=" max-w-3xl mx-auto mt-10 mb-24 px-4 lg:px-0">
-      <div className="flex flex-col gap-2 px-4 rounded-xl text-text1 mb-6">
-        <h2 className="text-4xl text-center font-bold text-main1">
-          Create Game
-        </h2>
-        <p className="text-center text-sm text-muted">
-          Create a game for you and your friends to enjoy
-        </p>
-      </div>
+    <div className="relative isolate">
+      <div className="absolute -top-24 left-[10%] w-80 h-80 rounded-full bg-main1/10 blur-3xl -z-10 animate-drift" aria-hidden />
+      <div className="absolute -top-24 right-[10%] w-80 h-80 rounded-full bg-main2/10 blur-3xl -z-10 animate-drift [animation-delay:-7s]" aria-hidden />
 
-      {children}
+      <div className="max-w-5xl mx-auto mt-10 mb-24 px-4 sm:px-6 lg:px-8">
+        <div className="flex flex-col gap-2 text-center mb-8">
+          <h1 className="text-4xl md:text-5xl font-black tracking-tight text-white">
+            Create a{" "}
+            <span className="bg-gradient-to-r from-main1 to-main2 bg-clip-text text-transparent animate-gradient-pan">
+              game
+            </span>
+          </h1>
+          <p className="text-muted">
+            Come up with tough choices and see which side your friends pick.
+          </p>
+        </div>
+
+        {children}
+      </div>
     </div>
   );
 }

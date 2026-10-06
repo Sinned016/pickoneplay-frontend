@@ -2,6 +2,7 @@
 
 import { cn } from "@/lib/utils";
 import { Gamepad2, Settings } from "lucide-react";
+import { motion } from "motion/react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 
@@ -24,12 +25,19 @@ export default function ProfileNav() {
             key={tab.href}
             href={tab.href}
             className={cn(
-              "flex items-center gap-2 py-2 px-4 rounded-lg text-sm transition-all duration-200",
+              "relative isolate flex items-center gap-2 py-2 px-5 rounded-lg text-sm transition-colors duration-200",
               active
-                ? "bg-main1 text-black font-bold shadow-glow-main1"
+                ? "text-black font-bold"
                 : "font-medium text-muted hover:text-text1-hover hover:bg-surface1-hover",
             )}
           >
+            {active && (
+              <motion.span
+                layoutId="profile-tab"
+                className="absolute inset-0 -z-10 rounded-lg bg-main1 shadow-glow-main1"
+                transition={{ type: "spring", stiffness: 400, damping: 32 }}
+              />
+            )}
             <Icon className="w-4 h-4" />
             {tab.label}
           </Link>
