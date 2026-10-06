@@ -80,9 +80,14 @@ export default function ProfileHeader({ user: serverUser, stats }: Props) {
 }
 
 // Initial letter inside a slowly spinning cyan -> coral ring.
-export function Avatar({ name, size = "lg" }: { name: string; size?: "md" | "lg" }) {
-  const outer = size === "lg" ? "w-24 h-24" : "w-14 h-14";
-  const text = size === "lg" ? "text-4xl" : "text-2xl";
+const AVATAR_SIZES = {
+  sm: { outer: "w-8 h-8 sm:w-9 sm:h-9", text: "text-sm sm:text-base", inset: "inset-[2px]" },
+  md: { outer: "w-14 h-14", text: "text-2xl", inset: "inset-[3px]" },
+  lg: { outer: "w-24 h-24", text: "text-4xl", inset: "inset-[3px]" },
+};
+
+export function Avatar({ name, size = "lg" }: { name: string; size?: "sm" | "md" | "lg" }) {
+  const { outer, text, inset } = AVATAR_SIZES[size];
 
   return (
     <div className={`relative ${outer} shrink-0`}>
@@ -91,7 +96,7 @@ export function Avatar({ name, size = "lg" }: { name: string; size?: "md" | "lg"
         animate={{ rotate: 360 }}
         transition={{ duration: 8, repeat: Infinity, ease: "linear" }}
       />
-      <div className={`absolute inset-[3px] flex items-center justify-center rounded-full bg-background ${text} font-black`}>
+      <div className={`absolute ${inset} flex items-center justify-center rounded-full bg-background ${text} font-black`}>
         <span className="bg-gradient-to-br from-main1 to-main2 bg-clip-text text-transparent">
           {name.charAt(0).toUpperCase() || "?"}
         </span>

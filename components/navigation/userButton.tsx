@@ -1,9 +1,10 @@
 "use client";
 
+import { Avatar } from "@/components/profile/profileHeader";
 import Button from "@/components/ui/Button";
 import Card from "@/components/ui/Card";
 import { useAuth } from "@/store/useAuth";
-import { LogIn, LogOut, Settings, User } from "lucide-react";
+import { LogIn, LogOut, Settings } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
 
@@ -39,9 +40,10 @@ export default function UserButton() {
         <div ref={containerRef} className="relative">
           <button
             onClick={() => setMenuOpen((prev) => !prev)}
-            className="p-1 rounded-full bg-white cursor-pointer transition-all duration-200"
+            aria-label="Open profile menu"
+            className="block rounded-full cursor-pointer transition-transform duration-200 hover:scale-105"
           >
-            <User className="w-5 h-5 sm:w-6 sm:h-6 text-black stroke-3" />
+            <Avatar name={user.username} size="sm" />
           </button>
 
           <div
@@ -57,8 +59,8 @@ export default function UserButton() {
               radius="xl"
               className="shadow-lg! flex flex-col items-center overflow-hidden"
             >
-              <div className="p-1 rounded-full border-2 bg-white border-black mt-6">
-                <User className="w-6 h-6 sm:w-7 sm:h-7 lg:w-8 lg:h-8 text-black stroke-3" />
+              <div className="mt-6">
+                <Avatar name={user.username} size="md" />
               </div>
 
               <div className="text-text1 text-sm lg:text-base mb-1 mt-2 max-w-full truncate px-3 font-medium">
