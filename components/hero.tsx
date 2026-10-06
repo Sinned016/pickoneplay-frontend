@@ -37,9 +37,9 @@ function DuelCard({ game, side }: { game: Game; side: "left" | "right" }) {
       animate={{ opacity: 1, x: 0, rotate: isLeft ? -7 : 7 }}
       exit={{ opacity: 0, y: 40, rotate: isLeft ? -14 : 14 }}
       transition={{ type: "spring", stiffness: 140, damping: 18 }}
-      whileHover={{ rotate: 0, scale: 1.05, zIndex: 20 }}
+      whileHover={{ scale: 1.05, zIndex: 20 }}
       className={cn(
-        "absolute top-1/2 w-[46%] max-w-60 -translate-y-1/2",
+        "absolute top-1/2 w-[46%] max-w-60 -translate-y-1/2 [backface-visibility:hidden] [transform-style:preserve-3d]",
         isLeft ? "left-[2%]" : "right-[2%]",
       )}
     >
@@ -56,7 +56,9 @@ function DuelCard({ game, side }: { game: Game; side: "left" | "right" }) {
           src={game.image ?? "/placeholder-card.png"}
           alt={game.title}
           fill
-          sizes="240px"
+          sizes="(min-width: 1024px) 240px, 46vw"
+          quality={90}
+          loading="eager"
           className="object-cover"
         />
         <div className="absolute inset-x-0 bottom-0 h-1/2 bg-gradient-to-t from-black/90 to-transparent" />
